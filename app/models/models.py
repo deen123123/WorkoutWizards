@@ -3,7 +3,6 @@ from typing import Optional
 from app.models.user import User
 
 class UserExercise(SQLModel, table =True):
-    id:int = Field(primary_key = True)
     routine_id: Optional[int] = Field(foreign_key="routine.id", primary_key=True)
     exercise_id: Optional[int] = Field(foreign_key="exercise.id", primary_key=True)
 
@@ -29,9 +28,8 @@ class Excercise(SQLModel, table = True):
 
     
 class userMeal(SQLModel, table = True):
-    id:int = Field(primary_key = True)
-    user_id:int = Field(foreign_key = "user.id")
-    meal_id:int = Field(foreign_key = "meal.id")
+    user_id:int = Field(foreign_key = "user.id", primary_key=True)
+    meal_id:int = Field(foreign_key = "meal.id", primary_key=True)
 
 class Meal(SQLModel, table = True):
     id:int = Field(primary_key = True)
