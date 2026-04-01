@@ -35,7 +35,7 @@ class userMeal(SQLModel, table = True):
 
 class Meal(SQLModel, table = True):
     id:int = Field(primary_key = True)
-    recipes: list["Recipe"] = Relationship(populates="meals",link_model=userMeal   )    # user:list["Recipe"]
+    recipes: list["Recipe"] = Relationship(back_populates="meals",link_model=userMeal   )
 
 class Recipe(SQLModel, table = True):
     id:int = Field(primary_key = True)
@@ -51,5 +51,5 @@ class Recipe(SQLModel, table = True):
     carb_total_g:Optional[float]
     fiber_g:Optional[float]
     sugar_g:Optional[float]
-    meal: list["Meal"] = Relationship(populates="recipe",link_model=userMeal )
+    meal: list["Meal"] = Relationship(back_populates="recipe",link_model=userMeal )
     
