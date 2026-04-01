@@ -11,10 +11,13 @@ class UserBase(SQLModel,):
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    # height:Optional[int]
-    # weight:Optional[int]
-    # hip_width:Optional[int]
-    # neck_width:Optional[int]
-    # age:Optional[int]
-    # gender:Optional[str]
-    # calorie_goal:Optional[float]
+    height_m:Optional[int]
+    weight_kg:Optional[int]
+    hip_width:Optional[int]
+    neck_width:Optional[int]
+    age:Optional[int]
+    gender:Optional[str]
+    calorie_goal:Optional[float]
+    user_bmi:Optional[float]
+    def calculate_bmi(self):
+        return weight_kg/(height_m*height_m)
