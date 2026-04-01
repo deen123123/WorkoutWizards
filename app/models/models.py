@@ -23,7 +23,7 @@ class Excercise(SQLModel, table = True):
     equip2:Optional[str] |None
     equip3:Optional[str] |None
     safety:Optional[str]
-    routine:list["Routine"] =Relationship(back_populates = "exercise",
+    routines:list["Routine"] =Relationship(back_populates = "exercises",
                                         link_model = UserExercise)
 
 
@@ -51,5 +51,5 @@ class Recipe(SQLModel, table = True):
     carb_total_g:Optional[float]
     fiber_g:Optional[float]
     sugar_g:Optional[float]
-    meal: list["Meal"] = Relationship(back_populates="recipe",link_model=userMeal )
+    meals: list["Meal"] = Relationship(back_populates="recipes",link_model=userMeal )
     
