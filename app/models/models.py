@@ -1,11 +1,12 @@
 from sqlmodel import Field, SQLModel,Relationship
 from typing import Optional
 from app.models.user import User
-
-class UserExercise(SQLModel, table =True):
-    id:int = Field(primary_key = True)
-    routine_id: Optional[int] = Field(foreign_key="routine.id")#
-    exercise_id: Optional[int] = Field(foreign_key="exercise.id")
+#use this table to reference a one many relationship between user and their routines
+#and then the routines have a one to many relationship between itself and many exercises
+class UserRoutine(SQLModel, table =True):
+    user_id:int = Field(foreign_key = "user.id", primary_key = True)
+    routine_id: Optional[int] = Field(foreign_key="routine.id", primary_key = True)#
+    #exercise_id: Optional[int] = Field(foreign_key="exercise.id")
 
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
