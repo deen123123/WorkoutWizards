@@ -10,7 +10,7 @@ from app.models.user import *
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
     user_id:int = Field(foreign_key = "user.id")
-    user: Optional[User] = Relationship(back_populates = "routines")
+    #user: Optional[User] = Relationship(back_populates = "routines")
     exercises:list["Exercise"] = Relationship(back_populates = "routines",
                                                link_model = UserExercise)
 
@@ -38,7 +38,7 @@ class Meal(SQLModel, table = True):
     id:int = Field(primary_key = True)
     name:str
     user_id:int = Field(foreign_key = "user.id")
-    user: Optional[User] = Relationshup(back_populates = "meals")
+    #user: Optional[User] = Relationshup(back_populates = "meals")
     recipes: list["Recipe"] = Relationship(back_populates="meals",link_model=MealRecipe   )
 
 class Recipe(SQLModel, table = True):
