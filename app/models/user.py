@@ -22,4 +22,4 @@ class User(UserBase, table=True):
     #call this method to calculate the userBMI and just pass the value it returns
     #in the attribute above
     def calculate_bmi(self):
-        return weight_kg/(height_m*height_m)
+        return self.weight_kg/(self.height_m*self.height_m)
