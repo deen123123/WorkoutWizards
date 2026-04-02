@@ -1,13 +1,16 @@
 from sqlmodel import Field, SQLModel,Relationship
 from typing import Optional
+from app.models.user import *
 
 
-class UserRoutine(SQLModel, table =True):
-    routine_id: int = Field(foreign_key="routine.id", primary_key = True)#
-    exercise_id: int = Field(foreign_key="exercise.id", primary_key = True)
+#class UserRoutine(SQLModel, table =True):
+ #   routine_id: int = Field(foreign_key="routine.id", primary_key = True)#
+  #  exercise_id: int = Field(foreign_key="exercise.id", primary_key = True)
 
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
+    user_id:int = Field(foreign_key = "user.id")
+    user: Optional[User] = Relationship(back_populates = "routines")
     exercises:list["Exercise"] = Relationship(back_populates = "routines",
                                                link_model = UserExercise)
 
@@ -34,6 +37,8 @@ class MealRecipe(SQLModel, table = True):
 class Meal(SQLModel, table = True):
     id:int = Field(primary_key = True)
     name:str
+    user_id:int = Field(foreign_key = "user.id")
+    user: Optional[User] = Relationshup(back_populates = "meals")
     recipes: list["Recipe"] = Relationship(back_populates="meals",link_model=MealRecipe   )
 
 class Recipe(SQLModel, table = True):
