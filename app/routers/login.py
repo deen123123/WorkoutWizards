@@ -1,6 +1,6 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi import Request, status, Form
-from app.dependencies import SessionDep
+from app.dependencies.session import SessionDep
 from . import router, templates
 from app.services.auth_service import AuthService
 from app.repositories.user import UserRepository

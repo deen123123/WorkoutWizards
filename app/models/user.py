@@ -10,17 +10,17 @@ class UserBase(SQLModel,):
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    height_m:Optional[int]
-    weight_kg:Optional[int]
-    hip_width:Optional[int]
-    neck_width:Optional[int]
-    age:Optional[int]
-    gender:Optional[str]
-    calorie_goal:Optional[float]
+    height_m:Optional[int] = 0
+    weight_kg:Optional[int] = 0
+    hip_width:Optional[int] = 0
+    neck_width:Optional[int] = 0
+    age:Optional[int] = 0
+    gender:Optional[str] = 0
+    calorie_goal:Optional[float] = 0
     routines: list["Routine"] = Relationship(back_populates="user")
     meals: list["Meal"] = Relationship(back_populates="user")
     
-    user_bmi:Optional[float]
+    user_bmi:Optional[float] = 0
     #call this method to calculate the userBMI and just pass the value it returns
     #in the attribute above
     def calculate_bmi(self):
