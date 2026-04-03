@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     database_uri: str
     secret_key: str
     env: str
+    api_key_exercise:str
     jwt_algorithm: str="HS256"
     jwt_access_token_expires:int=30
     app_host: str="0.0.0.0"

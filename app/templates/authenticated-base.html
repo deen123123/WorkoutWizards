@@ -69,13 +69,25 @@
 <div id="wrapper">
 
     <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <h4 class="text-white mb-4 text-center py-4">Project Template</h4>
+        <h4 class="text-white mb-4 text-center py-4">{{user.username}}</h4>
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/app' }}" href="/app">
                     <span class="material-symbols-outlined me-2">people</span>
-                    Users
+                    Home
+                </a>
+                  <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/workout' }}" href="/workout">
+                    <span class="material-symbols-outlined me-2">Exercise</span>
+                    Workouts
+                </a>
+                  <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/trackcal' }}" href="/trackcalories">
+                    <span class="material-symbols-outlined me-2">meal_dinner</span>
+                    Track Calories
+                </a>
+                  <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/recipes' }}" href="/recipes">
+                    <span class="material-symbols-outlined me-2">chef_hat</span>
+                    Recipes
                 </a>
             </li>
             

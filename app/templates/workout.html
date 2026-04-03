@@ -5,8 +5,9 @@
 {% endblock %}
 
 
+
 {% block subpage_content %}
-    
+  
      <div class="container" id="content">
         <div id = "row" class="row">
             <p style="text-align: center;">
@@ -17,6 +18,9 @@
         </div>
         
         <div class="row">
+            <form method="GET" action="/routines">
+            <button type = "submit">GetRoutines</button>
+            </form>
             <table class="table table-striped">
                 <thead>
                   <tr>
@@ -31,3 +35,5 @@
     </div>
 
 {% endblock %}
+
+<!--Each workout havea modal popup based on that body part-->

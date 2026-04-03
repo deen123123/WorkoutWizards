@@ -1,0 +1,41 @@
+{% extends "authenticated-base.html" %}
+
+{% block subpage_content %}
+<h1>Exercises</h1>
+
+<form method="get" action="/api/exercises">
+    <input type="text" name="muscle" placeholder="Enter muscle (e.g. chest)" value="{{ muscle or '' }}">
+    <button type="submit">Search</button>
+</form>
+
+<table border="1" style="margin-top:20px;">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Muscle</th>
+            <th>Difficulty</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ex in exercises %}
+        <tr>
+            <td>{{ ex.name }}</td>
+            <td>{{ ex.type }}</td>
+            <td>{{ ex.muscle }}</td>
+            <td>{{ ex.difficulty }}</td>
+         <td><!--MAKE THE ADDWORKOUT BUTTON FUNCTIONAL-->
+        <form method="POST" action="/api/add_exercise">
+        <input type="hidden" name="name" value="{{ ex.name }}">
+        <input type="hidden" name="type" value="{{ ex.type }}">
+        <input type="hidden" name="muscle" value="{{ ex.muscle }}">
+        <input type="hidden" name="difficulty" value="{{ ex.difficulty }}">
+        <button type="submit">AddWorkout</button>
+     </form>
+        </td>
+       
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

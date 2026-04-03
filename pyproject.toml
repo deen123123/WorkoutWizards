@@ -24,6 +24,8 @@ dependencies = [
     "pytest-asyncio",
     "pytest",
     "ruff",
+    "python-dotenv",
+    "requests",
     "sqlmodel",
     "tabulate",
     "typer",

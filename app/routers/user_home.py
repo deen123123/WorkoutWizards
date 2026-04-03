@@ -19,3 +19,14 @@ async def user_home_view(
             "user": user
         }
     )
+@router.get("/authenticated-base", response_class = HTMLResponse)
+async def auth_base(
+    user:AuthDep,db:SessionDep,request:Request
+):
+    return templates.TemplateResponse(
+        request = request,
+        name = "authenticated-base.html",
+        context = {
+            "user":user
+        }
+    )
