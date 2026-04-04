@@ -1,39 +1,153 @@
 {% extends "authenticated-base.html" %}
 
 {% block external_js %}
-<script src="{{ url_for('static', path='js/app.js')}}"></script>
+<script src="{{ url_for('static', path='js/app.js') }}"></script>
 {% endblock %}
-
-
 
 {% block subpage_content %}
-  
-     <div class="container" id="content">
-        <div id = "row" class="row">
-            <p style="text-align: center;">
-               WorkoutWizards
-            </p>
-            <!-- This is table is rendered on the Client. JavaScript code request
-             s the data from <a href="/api/users">/api/users</a> and writes it to this page.-->
-        </div>
-        
-        <div class="row">
-            <form method="GET" action="/routines">
-            <button type = "submit">GetRoutines</button>
-            </form>
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Id</th><th>Username</th>
-                  </tr>
-                </thead>
-                <tbody id="result">
-                
-                <tbody>
-            </table>
-        </div>
+
+<div class="container" id="content">
+    <div id="row" class="row">
+        <p style="text-align: center;">
+            WorkoutWizards
+        </p>
     </div>
 
-{% endblock %}
+    <div class="row mb-3">
+        <form method="GET" action="/routines" class="d-inline">
+            <button type="submit" class="btn btn-primary">Add Workouts</button>
+        </form>
 
-<!--Each workout havea modal popup based on that body part-->
+        <form method="POST" action="/routines/" class="d-inline ms-2">
+            <input type="text" name="name" id="routine" placeholder="Enter Routine Name" class="form-control d-inline" style="width: auto;">
+            <button type="submit" class="btn btn-success">Create Routine</button>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Workout Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for routine in routines %}
+            <tr>
+                <td>{{ routine.id }}</td>
+                <td>{{ routine.name }}</td>
+                <td>
+                    <!-- Rename Routine Modal Trigger -->
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#renameRoutineModal-{{ routine.id }}">
+                        Rename
+                    </button>
+
+                    <!-- View Exercises Modal Trigger -->
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exercisesModal-{{ routine.id }}">
+                        View Exercises
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Rename Routine Modals -->
+    {% for routine in routines %}
+    <div class="modal fade" id="renameRoutineModal-{{ routine.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="/edit-routine-name/?routine_id={{ routine.id }}">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Rename Routine</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" name="name" value="{{ routine.name }}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Exercises Modals -->
+    {% for routine in routines %}
+    <div class="modal fade" id="exercisesModal-{{ routine.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exercises for {{ routine.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    {% if routine.exercises %}
+                        <ul class="list-group">
+                        {% for ex in routine.exercises %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>
+                                    <strong>{{ ex.exercise.name }}</strong> ({{ ex.exercise.muscle }}) - {{ ex.exercise.difficulty }}
+                                </span>
+                                <!-- Edit Exercise Button -->
+                                <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editExerciseModal-{{ routine.id }}-{{ loop.index }}">
+                                    Edit
+                                </button>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No exercises yet.</p>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Edit Exercise Modals (outside list items) -->
+    {% for routine in routines %}
+        {% for ex in routine.exercises %}
+        <div class="modal fade" id="editExerciseModal-{{ routine.id }}-{{ loop.index }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="/edit-exercises/?routine_id={{ routine.id }}&exercise_id={{ ex.exercise.id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Exercise</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label>Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ ex.exercise.name }}">
+                            </div>
+                            <div class="mb-2">
+                                <label>Muscle</label>
+                                <input type="text" class="form-control" name="muscle" value="{{ ex.exercise.muscle }}">
+                            </div>
+                            <div class="mb-2">
+                                <label>Difficulty</label>
+                                <input type="text" class="form-control" name="difficulty" value="{{ ex.exercise.difficulty }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+
+</div>
+
+{% endblock %}

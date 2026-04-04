@@ -3,15 +3,21 @@ from typing import Optional
 
 
 
-class UserRoutine(SQLModel, table =True):
+#NO LINK MODEL APPROACH FOR ROUTINEEXERCISE since attributes are added
+class RoutineExercise(SQLModel, table =True):
    routine_id: int = Field(foreign_key="routine.id", primary_key = True)#
    exercise_id: int = Field(foreign_key="exercise.id", primary_key = True)
-
+   sets: int = 0
+   reps: int = 0
+   rest_time: int = 0
+   routine: Optional["Routine"] = Relationship(back_populates="exercises")
+   exercise: Optional["Exercise"] = Relationship(back_populates="routines")
 class Routine(SQLModel, table = True):
     id:int = Field(primary_key = True)
+    name:str
     user_id:int = Field(foreign_key = "user.id")
     user: Optional["User"] = Relationship(back_populates = "routines")
-    exercises:list["Exercise"] = Relationship(back_populates = "routines",link_model = UserRoutine)
+    exercises: list["RoutineExercise"] = Relationship(back_populates="routine")
 
 class Exercise(SQLModel, table = True):
     id:int = Field(primary_key = True)
@@ -24,8 +30,7 @@ class Exercise(SQLModel, table = True):
     equip2:Optional[str] 
     equip3:Optional[str] 
     safety:Optional[str]
-    routines:list["Routine"] =Relationship(back_populates = "exercises",link_model = UserRoutine)
-
+    routines:list["RoutineExercise"] =Relationship(back_populates = "exercise")
 
     
 class MealRecipe(SQLModel, table = True):
