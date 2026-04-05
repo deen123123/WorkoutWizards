@@ -32,10 +32,11 @@ class Exercise(SQLModel, table = True):
     safety:Optional[str]
     routines:list["RoutineExercise"] =Relationship(back_populates = "exercise")
 
-    
+  #USES LINK MODEL APPROACH for just the 2 keys  no attributes
 class MealRecipe(SQLModel, table = True):
    recipe_id:int = Field(foreign_key = "recipe.id", primary_key=True)
    meal_id:int = Field(foreign_key = "meal.id", primary_key=True)
+   
 
 class Meal(SQLModel, table = True):
     id:int = Field(primary_key = True)
