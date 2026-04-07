@@ -1,4 +1,7 @@
 from fastapi import APIRouter
+from app.dependencies.session import SessionDep
+from app.models.models import Meal
+from sqlmodel import select
 
 router = APIRouter (prefix="/api/meals", tags=["meals"])
 
@@ -280,10 +283,46 @@ meals = [
 }
 ]
 
-@router.get("/")
-def get_all_meals():
- return meals
+@router.get("/")        #gets all the meal
+def get_meals(db: SessionDep):
+    return db.exec(select(Meal)).all()
 
-@router.get("/{meal_type}")
-def get_by_type(meal_type: str):
- return [m for m in meals if m["type"] == meal_type]
+@router.get("/type/{meal_type}")     #gets by the type
+def get_by_type(meal_type: str, db: SessionDep):
+    statement = select(Meal).where(Meal.type == meal_type.lower())
+    return db.exec(statement).all()
+
+@router.get("/{meal_id}")        #gets one
+def get_meal(meal_id: int, db: SessionDep):
+     return db.get(Meal, meal_id)
+
+@router.post("/")           #create meal
+def create_meal(meal: Meal, db: SessionDep):
+     db.add(meal)
+     db,commit()
+     db.refresh(meal)
+     return meal
+
+@router.put("/{meal_id}")          #update meals
+def update_meal(meal_id: int, updated_meal: Meal, db: SessionDep):
+      meal = db.get(Meal, meal_id)
+      if not meal:
+            return {"Meal not found"}
+
+      for key, value in updated_meal.dict().items():
+            setattr(meal, key, value)
+
+      db.commit()
+      db.refresh(meal)
+      return meal
+
+@router.delete("/{meal_id}")       #delete
+def delete_meal(meal_id: int, db: SessionDep):
+    meal = db.get(Meal, meal_id)
+    if not meal:
+        return {"error": "Not found"}
+      db.delete(meal)
+      db.commit()
+      return{"Message": "Deleted"}
+ 
+
