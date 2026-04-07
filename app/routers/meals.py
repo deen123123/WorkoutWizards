@@ -3,7 +3,7 @@ from fastapi import APIRouter
 router = APIRouter (perfix="/api/meals", tags=["meals"])
 
 meals = [
- BREAKFAST (8)
+ #BREAKFAST 
 {
     "id": 1,
     "type": "breakfast",
@@ -280,3 +280,10 @@ meals = [
 }
 ]
 
+@router.get("/")
+def get_all_meals():
+ return meals
+
+@router.get("/{meal_type}")
+def get_by_type(meal_type: str):
+ return [m for m in meals if m["type] == meal_type]
