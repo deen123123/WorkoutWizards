@@ -286,4 +286,4 @@ def get_all_meals():
 
 @router.get("/{meal_type}")
 def get_by_type(meal_type: str):
- return [m for m in meals if m["type] == meal_type]
+ return [m for m in meals if m["type"] == meal_type]
