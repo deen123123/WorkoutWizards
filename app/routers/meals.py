@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-router = APIRouter (perfix="/api/meals", tags=["meals"])
+router = APIRouter (prefix="/api/meals", tags=["meals"])
 
 meals = [
  #BREAKFAST 
