@@ -45,3 +45,10 @@ def get_totals(db: SessionDep):
         "fat": total_fat
     }
 
+@router.get("/trackcalories", response_class=HTMLResponse)
+async def get_workout(user:AuthDep, db:SessionDep, request:Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="trackcalories.html",
+        context={"user": user}
+    )
