@@ -321,8 +321,8 @@ def delete_meal(meal_id: int, db: SessionDep):
     meal = db.get(Meal, meal_id)
     if not meal:
         return {"error": "Not found"}
-      db.delete(meal)
-      db.commit()
-      return{"Message": "Deleted"}
+    db.delete(meal)
+    db.commit()
+    return{"Message": "Deleted"}
  
 
