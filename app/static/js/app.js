@@ -19,4 +19,22 @@ async function main(){
     loadTable(users);
 }
 
+async function loadTotals() {
+    const res = await fetch('trackcalories/totals');
+    const data = await res.json();
+
+    document.getElementById('calories').innerText = data.calories;
+    document.getElementById('protein').innerText = data.protein;
+    document.getElementById('carbs').innerText = data.carbs;
+    document.getElementById('fat').innerText = data.fat;
+}
+
+async function addMeal(id){
+    await fetch('/trackcalories/add?meal_id=${id}',{
+        method: 'POST'
+    });
+
+    loadTotals();
+}
+
 main();
