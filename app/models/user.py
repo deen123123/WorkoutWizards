@@ -1,7 +1,8 @@
 from sqlmodel import Field, SQLModel,Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from pydantic import EmailStr
-
+if TYPE_CHECKING:
+    from .models import Routine, Meal
 
 class UserBase(SQLModel,):
     username: str = Field(index=True, unique=True)
