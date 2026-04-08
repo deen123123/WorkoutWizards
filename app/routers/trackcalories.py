@@ -10,7 +10,7 @@ from sqlmodel import select
 router = APIPouter(prefix="/trackercalories", tags=["tracker"])
 
 @router.post("/add")
-def add_to_tracker(meal_id: int, db; SessionDep):
+def add_to_tracker(meal_id: int, db: SessionDep):
     meal = db.get(Meal, meal_id)
 
     if not meal:
