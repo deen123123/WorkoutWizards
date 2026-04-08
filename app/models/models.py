@@ -35,7 +35,7 @@ class Exercise(SQLModel, table = True):
   #USES LINK MODEL APPROACH for just the 2 keys  no attributes
 class MealRecipe(SQLModel, table = True):
    recipe_id:int = Field(foreign_key = "recipe.id", primary_key=True)
-   meal_id:int = Field(foreign_key = "meal.id", primary_key=True)
+   meal_id:int = Field(foreign_key = "meals.id", primary_key=True)
    
 
 class Meals(SQLModel, table = True):
