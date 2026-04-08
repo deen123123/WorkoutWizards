@@ -3,10 +3,10 @@ from app.dependencies.session import SessionDep
 from app.models.models import Meal
 from sqlmodel import select
 
-router = APIRouter (prefix="/api/meals", tags=["meals"])
+router = APIRouter(prefix="/api/meals", tags=["meals"])#
 
-meals = [
- #BREAKFAST 
+default_meals = [
+ #BREAKFAST (8)
 {
     "id": 1,
     "type": "breakfast",
@@ -282,47 +282,75 @@ meals = [
     "protein": 12, "carbs": 1, "fat": 10, "calories": 150
 }
 ]
+# SEED DATABASE 
+def seed_meals(db):
+    existing = db.exec(select(Meal)).first()
+    if existing:
+        return 
 
-@router.get("/")        #gets all the meal
+    for meal_data in default_meals:
+        meal = Meal(**meal_data)
+        db.add(meal)
+
+    db.commit()
+
+
+# GET ALL MEALS
+@router.get("/")
 def get_meals(db: SessionDep):
+    seed_meals(db)  
     return db.exec(select(Meal)).all()
 
-@router.get("/type/{meal_type}")     #gets by the type
+
+# GET BY TYPE
+@router.get("/type/{meal_type}")
 def get_by_type(meal_type: str, db: SessionDep):
+    seed_meals(db)
     statement = select(Meal).where(Meal.type == meal_type.lower())
     return db.exec(statement).all()
 
-@router.get("/{meal_id}")        #gets one
+
+# GET ONE MEAL
+@router.get("/{meal_id}")
 def get_meal(meal_id: int, db: SessionDep):
-     return db.get(Meal, meal_id)
+    return db.get(Meal, meal_id)
 
-@router.post("/")           #create meal
+
+# CREATE MEAL
+@router.post("/")
 def create_meal(meal: Meal, db: SessionDep):
-     db.add(meal)
-     db,commit()
-     db.refresh(meal)
-     return meal
+    db.add(meal)
+    db.commit()  
+    db.refresh(meal)
+    return meal
 
-@router.put("/{meal_id}")          #update meals
+
+# UPDATE MEAL
+@router.put("/{meal_id}")
 def update_meal(meal_id: int, updated_meal: Meal, db: SessionDep):
-      meal = db.get(Meal, meal_id)
-      if not meal:
-            return {"Meal not found"}
+    meal = db.get(Meal, meal_id)
 
-      for key, value in updated_meal.dict().items():
-            setattr(meal, key, value)
+    if not meal:
+        return {"error": "Meal not found"}
 
-      db.commit()
-      db.refresh(meal)
-      return meal
+    for key, value in updated_meal.dict().items():
+        setattr(meal, key, value)
 
-@router.delete("/{meal_id}")       #delete
+    db.commit()
+    db.refresh(meal)
+    return meal
+
+
+# DELETE MEAL
+@router.delete("/{meal_id}")
 def delete_meal(meal_id: int, db: SessionDep):
     meal = db.get(Meal, meal_id)
+
     if not meal:
         return {"error": "Not found"}
+
     db.delete(meal)
     db.commit()
-    return{"Message": "Deleted"}
+    return {"message": "Deleted"}
  
 
