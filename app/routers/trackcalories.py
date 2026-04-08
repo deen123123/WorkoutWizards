@@ -5,11 +5,11 @@ from app.dependencies.session import SessionDep
 from app.dependencies.auth import AuthDep, IsUserLoggedIn, get_current_user, is_admin
 from . import router, templates
 from app.models.models import Meal, Tracker
-frome sqlmodel import select
+from sqlmodel import select
 
 router = APIPouter(prefix="/trackercalories", tags=["tracker"])
 
-@router.post('/add")
+@router.post("/add")
 def add_to_tracker(meal_id: int, db; SessionDep):
     meal = db.get(Meal, meal_id)
 
@@ -24,10 +24,10 @@ def add_to_tracker(meal_id: int, db; SessionDep):
         fat: meal.fat
     )
 
-db.add(tracker)
-db.commit()
-db.refresh(tracker)
-return tracker
+    db.add(tracker)
+    db.commit()
+    db.refresh(tracker)
+    return tracker
 
 @router.get("/total")
 def get_totals(db: SessionDep):
