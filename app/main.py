@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Request, status
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
-from app.routers import templates, static_files, router, api_router, meals, trackcalories
+from app.routers import templates, static_files, router, api_router, meals, trackcalories, recipes
 from app.config import get_settings
 from contextlib import asynccontextmanager
 
@@ -21,8 +21,9 @@ app = FastAPI(middleware=[
     lifespan=lifespan
 )   
 
-app.include_router(trackcalories.router)
 app.include_router(meals.router)
+app.include_router(recipes.router)
+app.include_router(trackcalories.router)
 app.include_router(router)
 app.include_router(api_router)
 app.mount("/static", static_files, name="static")
