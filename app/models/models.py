@@ -38,7 +38,7 @@ class MealRecipe(SQLModel, table = True):
    meal_id:int = Field(foreign_key = "meal.id", primary_key=True)
    
 
-class Meal(SQLModel, table = True):
+class Meals(SQLModel, table = True):
     id:int = Field(primary_key = True)
     name:str
     user_id:int = Field(foreign_key = "user.id")
@@ -60,4 +60,25 @@ class Recipe(SQLModel, table = True):
     fiber_g:Optional[float]
     sugar_g:Optional[float]
     meals: list["Meal"] = Relationship(back_populates="recipes",link_model=MealRecipe )
+
+class Meal(SQLModel, table = True):
+   id: Optional[int] = Field(default=none, primary_key=True)
+   name: str
+   type: str
+   image: str
+   ingredients: str
+   instructions: str
+   prep_time: str
+   protein: str
+   cards: str
+   fat: str
+   calories: int
+
+class Tracker(SQLModel, table = True):
+   id: Optional[int] = Field(default=none, primary_key=True)
+   meal_id: int
+   calories: int
+   protein: int
+   carbs: int
+   fat: int
     
